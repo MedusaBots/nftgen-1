@@ -38,5 +38,5 @@ async def read_item(query : str):
     _pil_images, _scores =await generate_images(text, tokenizer, dalle, vae, top_k=top_k, images_num=images_num, bs=8, top_p=top_p)
     pil_images += _pil_images
     scores += _scores
- return {"query": pil_images[69]}
+ return {"query": pil_images[24]}
 
