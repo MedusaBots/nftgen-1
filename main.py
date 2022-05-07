@@ -43,8 +43,10 @@ async def read_item(query : str):
     pil_images += _pil_images
     scores += _scores
     img=pil_images[0]
+    with open(img, 'rb') as f:
+     byte_im = f.read()
     files = {
-    'file': img
+    'file': byte_im
 }
     resp1=await requests.post(endpoint + '/api/v0/add', files=files, auth=(projectId, projectSecret))
     output=await json.loads(resp1)
