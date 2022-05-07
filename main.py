@@ -26,17 +26,17 @@ clip_predictor = ruclip.Predictor(clip, processor, device, bs=8)
 scores = []
 @app.options("/nft/{query}")
 async def read_i(query : str):
-   return {"query": success}
+   return {"query": "success"}
 @app.get("/nft/{query}")
 async def read_item(query : str):
  text= query
  seed_everything(42)
  pil_images = []
  for top_k, top_p, images_num in [
-    (2048, 0.995, 5),
+    (2048, 0.995, 1),
 ]:
     _pil_images, _scores =await generate_images(text, tokenizer, dalle, vae, top_k=top_k, images_num=images_num, bs=8, top_p=top_p)
     pil_images += _pil_images
     scores += _scores
- return {"query": pil_images[5]}
+ return {"query": pil_images[1]}
 
