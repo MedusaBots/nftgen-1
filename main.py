@@ -5,6 +5,8 @@ from rudalle import get_rudalle_model, get_tokenizer, get_vae, get_realesrgan
 from rudalle.utils import seed_everything
 from fastapi.middleware.cors import CORSMiddleware
 import requests
+import io
+from PIL import Image
 app = FastAPI()
 import json
 
@@ -43,8 +45,11 @@ async def read_item(query : str):
     pil_images += _pil_images
     scores += _scores
     img=pil_images[0]
-    with open(img, 'rb') as f:
-     byte_im = f.read()
+    im = Image.open(img)
+    im_resize = im.resize((500, 500))
+    buf = io.BytesIO()
+    im_resize.save(buf, format='JPEG')
+    byte_im = buf.getvalue()
     files = {
     'file': byte_im
 }
