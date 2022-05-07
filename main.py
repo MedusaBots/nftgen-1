@@ -34,10 +34,11 @@ async def read_item(query : str):
  seed_everything(42)
  pil_images = []
  for top_k, top_p, images_num in [
-    (2048, 0.995, 4),
+    (2048, 0.995, 1),
 ]:
     _pil_images, _scores = generate_images(text, tokenizer, dalle, vae, top_k=top_k, images_num=images_num, bs=8, top_p=top_p)
     pil_images += _pil_images
     scores += _scores
- return {"query": pil_images[3]}
+    img=pil_images[0]
+ return {"query": img}
 
