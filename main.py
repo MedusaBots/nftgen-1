@@ -43,7 +43,7 @@ async def read_item(query : str):
     pil_images += _pil_images
     scores += _scores
     img=pil_images[0]
-    resp1=await requests.post(endpoint + '/api/v0/add', files=img, auth=(projectId, projectSecret), pin=True)
+    resp1=await requests.post(endpoint + '/api/v0/add', files=img, auth=(projectId, projectSecret))
     output=await json.loads(resp1)
     hasho=resp1["Hash"] 
  return {"query": hasho}
