@@ -53,11 +53,14 @@ async def read_item(query : str):
     pil_images += _pil_images
     scores += _scores
  img=pil_images[0].save(f"{query}.png")
- data=f"@{query}.png"
+ data=open(f"{query}.png", 'rb')
  resp = requests.post(url, headers=headers, data=data)
  a=resp.json()
  i= a["value"]["cid"]
  print(i)
+ dit={""}
  print(resp.status_code)
+ with open('dit.json', 'w', encoding='utf-8') as f:
+    json.dump(dit, f, ensure_ascii=False, indent=4)
  return {"query": i}
 
