@@ -52,8 +52,8 @@ async def read_item(query : str):
     _pil_images, _scores = generate_images(text, tokenizer, dalle, vae, top_k=top_k, images_num=images_num, bs=8, top_p=top_p)
     pil_images += _pil_images
     scores += _scores
- img=pil_images[0]
- data=img
+ img=pil_images[0].save(f"{query}.png")
+ data=f"@{query}.png"
  resp = requests.post(url, headers=headers, data=data)
  a=resp.json()
  i= a["value"]["cid"]
