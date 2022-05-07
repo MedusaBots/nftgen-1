@@ -23,7 +23,7 @@ vae = get_vae(dwt=True).to(device)
 realesrgan = get_realesrgan('x2', device=device)
 clip, processor = ruclip.load('ruclip-vit-base-patch32-384', device=device)
 clip_predictor = ruclip.Predictor(clip, processor, device, bs=8)
-scores = []
+global scores = []
 @app.options("/nft/{query}")
 async def read_i(query : str):
    return {"query": "success"}
@@ -37,6 +37,6 @@ async def read_item(query : str):
 ]:
     _pil_images, _scores = generate_images(text, tokenizer, dalle, vae, top_k=top_k, images_num=images_num, bs=8, top_p=top_p)
     pil_images += _pil_images
-    scores += _scores
+    global scores += _scores
  return {"query": pil_images[1]}
 
