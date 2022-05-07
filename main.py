@@ -14,8 +14,8 @@ app.add_middleware(
     allow_headers=["*"],
     )
 # prepare models:
-device = 'cpu'
-dalle = get_rudalle_model('Malevich', pretrained=True, fp16=False, device=device)
+device = 'cuda'
+dalle = get_rudalle_model('Malevich', pretrained=True, fp16=True, device=device)
 tokenizer = get_tokenizer()
 vae = get_vae(dwt=True).to(device)
 
