@@ -46,7 +46,7 @@ async def read_item(query : str):
     files = {
     'file': img
 }
-    resp1=await requests.post(endpoint + '/api/v0/add', files=img, auth=(projectId, projectSecret))
+    resp1=await requests.post(endpoint + '/api/v0/add', files=files, auth=(projectId, projectSecret))
     output=await json.loads(resp1)
     hasho=resp1["Hash"] 
  return {"query": hasho}
