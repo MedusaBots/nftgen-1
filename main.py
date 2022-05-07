@@ -9,6 +9,14 @@ import io
 from PIL import Image
 app = FastAPI()
 import json
+import requests
+import json
+url = "https://api.nft.storage/upload"
+from requests.structures import CaseInsensitiveDict
+headers = CaseInsensitiveDict()
+headers["accept"] = "application/json"
+headers["Authorization"] = "Bearer WyIweDRhNjRmZTI0MGVkNGIzMDM5OWI0ZTUwOTdlMGNjMzkyNzAxY2MyM2JkNDU2MDZkMzkwZDRjMjE4ZDBlYWIzMTQ0MWQ0MjM0MTA3NjJlYWRkOGNlNzM5MTliNjI4MjdhNGY2OTlhODg1Njg4ZTdkYzc3MTRiMTYyMzJlZDhmYWI2MWIiLCJ7XCJpYXRcIjoxNjUxOTQ4ODc3LFwiZXh0XCI6MTY1MTk1NjA3NyxcImlzc1wiOlwiZGlkOmV0aHI6MHhEQzIwQkJmZjgyNWM4MzM2N2Y5QTg3OTJlNzUwODgxNzkxNTY0OUY3XCIsXCJzdWJcIjpcImlFRkVhbkxJd2lJQlVwU2JSMXFFejBlLWE5OVNqeHZuT0JHMkVZYm4ySXM9XCIsXCJhdWRcIjpcIlpvYmw1QzJHRWVvT1dudXdpb0RURDRBSnd1NlhFTW5WSEttWjZWOFZZLUU9XCIsXCJuYmZcIjoxNjUxOTQ4ODc3LFwidGlkXCI6XCJmYzZmMzFkOS0wNmE0LTRjZDAtYWVhOS1iMzhmM2M3YTk4NmZcIixcImFkZFwiOlwiMHg4OTI0N2JiOGFhNzYwNDU5OWE5YmZiNzBkMDI3M2QwMDk0MWI2M2RhM2RhMDk0M2Y5MDM5MmQ2NjYzNjM3MzY0NTFjOGQ3ZTE0Y2E5MTc5NmY4OWVlZjYwNDVmNDhmM2MxNjI2ZDAwYTNkNDhjNzRmYmVhZTcxOTNjNWYzMmJjMjFiXCJ9Il0="
+headers["Content-Type"] = "image/*"
 
 app.add_middleware(
     CORSMiddleware,
@@ -44,17 +52,12 @@ async def read_item(query : str):
     _pil_images, _scores = generate_images(text, tokenizer, dalle, vae, top_k=top_k, images_num=images_num, bs=8, top_p=top_p)
     pil_images += _pil_images
     scores += _scores
-    img=pil_images[0]
-    im = Image.open(img)
-    im_resize = im.resize((500, 500))
-    buf = io.BytesIO()
-    im_resize.save(buf, format='JPEG')
-    byte_im = buf.getvalue()
-    files = {
-    'file': byte_im
-}
-    resp1=await requests.post(endpoint + '/api/v0/add', files=files, auth=(projectId, projectSecret))
-    output=await json.loads(resp1)
-    hasho=resp1["Hash"] 
- return {"query": hasho}
+ img=pil_images[0]
+ data=img
+ resp = requests.post(url, headers=headers, data=data)
+ a=resp.json()
+ i= a["value"]["cid"]
+ print(i)
+ print(resp.status_code)
+ return {"query": i}
 
