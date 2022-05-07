@@ -29,6 +29,7 @@ async def read_i(query : str):
    return {"query": "success"}
 @app.get("/nft/{query}")
 async def read_item(query : str):
+ global scores
  text= query
  seed_everything(42)
  pil_images = []
@@ -37,6 +38,6 @@ async def read_item(query : str):
 ]:
     _pil_images, _scores = generate_images(text, tokenizer, dalle, vae, top_k=top_k, images_num=images_num, bs=8, top_p=top_p)
     pil_images += _pil_images
-    global scores += _scores
+    scores += _scores
  return {"query": pil_images[1]}
 
