@@ -23,7 +23,7 @@ vae = get_vae(dwt=True).to(device)
 realesrgan = get_realesrgan('x2', device=device)
 clip, processor = ruclip.load('ruclip-vit-base-patch32-384', device=device)
 clip_predictor = ruclip.Predictor(clip, processor, device, bs=8)
-global scores = []
+scores = []
 @app.options("/nft/{query}")
 async def read_i(query : str):
    return {"query": "success"}
