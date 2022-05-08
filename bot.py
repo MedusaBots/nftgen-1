@@ -431,8 +431,21 @@ async def read_item(query : str):
  print(a)
  itt= a["value"]["cid"]
  print(itt)
- dit=list({""})
+ dit=list({
+    "name": f"{query} - A artpiece by aiverse",
+    "description": "A piece of art made by an ai employed at aiverse. Aiverse is a deep-tech marketplace and no-code editors for making ai and metaverse",
+    "image": "https://{itt}.ipfs.nftstorage.link/",
+    "linktree": "https://linktr.ee/aiversedai"
+})
  print(resp.status_code)
- with open('dit.json', 'w', encoding='utf-8') as f:
+ with open(f'dit{query}.json', 'w', encoding='utf-8') as f:
     json.dump(dit, f, ensure_ascii=False, indent=4)
- return {"query": i}
+ files = {
+'file': (f'dit{query}.json',)
+}
+response = requests.post('https://ipfs.infura.io:5001/api/v0/add', files=files)
+p = response.json()
+print(p)
+hash = p['Hash']
+print(hash)
+ return {"query": f"https://aiverse-aigen.infura-ipfs.io/ipfs/{hash}"}
