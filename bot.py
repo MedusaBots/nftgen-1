@@ -380,7 +380,7 @@ async def read_item(query : str):
     out = synth(z)
     TF.to_pil_image(out[0].cpu()).save(f'{query}.png')
     display.display(display.Image(f'{query}.png'))
- 
+ i = 0
  def ascend_txt():
     global i
     out = synth(z)
@@ -411,7 +411,6 @@ async def read_item(query : str):
     with torch.no_grad():
         z.copy_(z.maximum(z_min).minimum(z_max))
 
- i = 0
  try:
     with tqdm() as pbar:
         while True:
