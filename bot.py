@@ -233,7 +233,7 @@ async def read_i(query : str):
    return {"query": "success"}
 @app.get("/nft/{query}")
 async def read_item(query : str):
- text= query
+ texts= query
  width =  600
  height = 600
  model = "vqgan_imagenet_f16_16384" 
