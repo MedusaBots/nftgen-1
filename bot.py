@@ -12,6 +12,10 @@ headers = CaseInsensitiveDict()
 headers["accept"] = "application/json"
 headers["Authorization"] = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweERDMjBCQmZmODI1YzgzMzY3ZjlBODc5MmU3NTA4ODE3OTE1NjQ5RjciLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTY1MjAzNzg2MzY5NiwibmFtZSI6ImFpdmVyc2UifQ.UAmNR8bj6RES1BqMW5v-W1u-rKLoZ6xWMsqzQ9yL3zo"
 headers["Content-Type"] = "image/*"
+header = CaseInsensitiveDict()
+header["accept"] = "application/json"
+header["Authorization"] = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweERDMjBCQmZmODI1YzgzMzY3ZjlBODc5MmU3NTA4ODE3OTE1NjQ5RjciLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTY1MjAzNzg2MzY5NiwibmFtZSI6ImFpdmVyc2UifQ.UAmNR8bj6RES1BqMW5v-W1u-rKLoZ6xWMsqzQ9yL3zo"
+header"Content-Type"] = "json/*"
 
 app.add_middleware(
     CORSMiddleware,
@@ -440,12 +444,10 @@ async def read_item(query : str):
  print(resp.status_code)
  with open(f'dit{query}.json', 'w', encoding='utf-8') as f:
     json.dump(dit, f, ensure_ascii=False, indent=4)
- files = {
-'file': (f'dit{query}.json',)
-}
- response = requests.post('https://ipfs.infura.io:5001/api/v0/add', files=files)
+ data=open(f"dit{query}.json", 'rb')
+ resp = requests.post(url, headers=header, data=data)
  p = response.json()
  print(p)
- hash = p['Hash']
+ hash = p["value"]["cid"]
  print(hash)
- return {"query": f"https://aiverse-aigen.infura-ipfs.io/ipfs/{hash}"}
+ return {"query": f"https://{hash}.ipfs.nftstorage.link/"}
