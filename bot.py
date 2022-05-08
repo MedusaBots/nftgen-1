@@ -237,7 +237,7 @@ async def read_i(query : str):
    return {"query": "success"}
 @app.get("/nft/{query}")
 async def read_item(query : str):
- texts= query
+ texts= query+" | surreal:0.5 | weird:0.25"
  width =  600
  height = 600
  model = "vqgan_imagenet_f16_16384" 
@@ -446,7 +446,7 @@ async def read_item(query : str):
     json.dump(dit, f, ensure_ascii=False, indent=4)
  data=open(f"dit{query}.json", 'rb')
  resp = requests.post(url, headers=header, data=data)
- p = response.json()
+ p = resp.json()
  print(p)
  hash = p["value"]["cid"]
  print(hash)
