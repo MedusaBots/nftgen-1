@@ -228,36 +228,6 @@ def resize_image(image, out_size):
     area = min(image.size[0] * image.size[1], out_size[0] * out_size[1])
     size = round((area * ratio)**0.5), round((area / ratio)**0.5)
     return image.resize(size, Image.LANCZOS)
-model = load_vqgan_model(args.vqgan_config, args.vqgan_checkpoint).to(device)
-perceptor = clip.load(args.clip_model, jit=False)[0].eval().requires_grad_(False).to(device)
-# clock=deepcopy(perceptor.visual.positional_embedding.data)
-# perceptor.visual.positional_embedding.data = clock/clock.max()
-# perceptor.visual.positional_embedding.data=clamp_with_grad(clock,0,1)
-
-cut_size = perceptor.visual.input_resolution
-
-f = 2**(model.decoder.num_resolutions - 1)
-make_cutouts = MakeCutouts(cut_size, args.cutn, cut_pow=args.cut_pow)
-
-toksX, toksY = args.size[0] // f, args.size[1] // f
-sideX, sideY = toksX * f, toksY * f
-
-if args.vqgan_checkpoint == 'vqgan_openimages_f16_8192.ckpt':
-    e_dim = 256
-    n_toks = model.quantize.n_embed
-    z_min = model.quantize.embed.weight.min(dim=0).values[None, :, None, None]
-    z_max = model.quantize.embed.weight.max(dim=0).values[None, :, None, None]
-else:
-    e_dim = model.quantize.e_dim
-    n_toks = model.quantize.n_e
-    z_min = model.quantize.embedding.weight.min(dim=0).values[None, :, None, None]
-    z_max = model.quantize.embedding.weight.max(dim=0).values[None, :, None, None]
-# z_min = model.quantize.embedding.weight.min(dim=0).values[None, :, None, None]
-# z_max = model.quantize.embedding.weight.max(dim=0).values[None, :, None, None]
-
-# normalize_imagenet = transforms.Normalize(mean=[0.485, 0.456, 0.406],
-#                                            std=[0.229, 0.224, 0.225])
-
 @app.options("/nft/{query}")
 async def read_i(query : str):
    return {"query": "success"}
@@ -318,7 +288,38 @@ async def read_item(query : str):
  else:
     seed = args.seed
     torch.manual_seed(seed)
-    print('Using seed:', seed) 
+    print('Using seed:', seed)
+ model = load_vqgan_model(args.vqgan_config, args.vqgan_checkpoint).to(device)
+ perceptor = clip.load(args.clip_model, jit=False)[0].eval().requires_grad_(False).to(device)
+ # clock=deepcopy(perceptor.visual.positional_embedding.data)
+ # perceptor.visual.positional_embedding.data = clock/clock.max()
+ # perceptor.visual.positional_embedding.data=clamp_with_grad(clock,0,1)
+
+ cut_size = perceptor.visual.input_resolution
+
+ f = 2**(model.decoder.num_resolutions - 1)
+ make_cutouts = MakeCutouts(cut_size, args.cutn, cut_pow=args.cut_pow)
+
+ toksX, toksY = args.size[0] // f, args.size[1] // f
+ sideX, sideY = toksX * f, toksY * f
+
+ if args.vqgan_checkpoint == 'vqgan_openimages_f16_8192.ckpt':
+    e_dim = 256
+    n_toks = model.quantize.n_embed
+    z_min = model.quantize.embed.weight.min(dim=0).values[None, :, None, None]
+    z_max = model.quantize.embed.weight.max(dim=0).values[None, :, None, None]
+ else:
+    e_dim = model.quantize.e_dim
+    n_toks = model.quantize.n_e
+    z_min = model.quantize.embedding.weight.min(dim=0).values[None, :, None, None]
+    z_max = model.quantize.embedding.weight.max(dim=0).values[None, :, None, None]
+ # z_min = model.quantize.embedding.weight.min(dim=0).values[None, :, None, None]
+ # z_max = model.quantize.embedding.weight.max(dim=0).values[None, :, None, None]
+
+ # normalize_imagenet = transforms.Normalize(mean=[0.485, 0.456, 0.406],
+ #                                            std=[0.229, 0.224, 0.225])
+
+
  if args.init_image:
     if 'http' in args.init_image:
       img = Image.open(urlopen(args.init_image))
