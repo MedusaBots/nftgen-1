@@ -383,6 +383,7 @@ async def read_item(query : str):
  i = 0
  def ascend_txt():
     global i
+    im=str(i)
     out = synth(z)
     iii = perceptor.encode_image(normalize(make_cutouts(out))).float()
     
@@ -395,7 +396,7 @@ async def read_item(query : str):
         result.append(prompt(iii))
     img = np.array(out.mul(255).clamp(0, 255)[0].cpu().detach().numpy().astype(np.uint8))[:,:,:]
     img = np.transpose(img, (1, 2, 0))
-    imageio.imwrite('./steps/' + str(i) + '.png', np.array(img))
+    imageio.imwrite('./steps/' + im + '.png', np.array(img))
 
     return result
 
