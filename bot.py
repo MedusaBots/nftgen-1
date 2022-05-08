@@ -371,7 +371,7 @@ async def read_item(query : str):
         z_q = vector_quantize(z.movedim(1, 3), model.quantize.embed.weight).movedim(3, 1)
     else:
         z_q = vector_quantize(z.movedim(1, 3), model.quantize.embedding.weight).movedim(3, 1)
-    return clamp_with_grad(model.decode(z_q).add(1).div(2), 0, 1
+    return clamp_with_grad(model.decode(z_q).add(1).div(2), 0, 1)
  def checkin(i, losses):
     losses_str = ', '.join(f'{loss.item():g}' for loss in losses)
     tqdm.write(f'i: {i}, loss: {sum(losses).item():g}, losses: {losses_str}')
