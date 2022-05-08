@@ -443,9 +443,9 @@ async def read_item(query : str):
  files = {
 'file': (f'dit{query}.json',)
 }
-response = requests.post('https://ipfs.infura.io:5001/api/v0/add', files=files)
-p = response.json()
-print(p)
-hash = p['Hash']
-print(hash)
+ response = requests.post('https://ipfs.infura.io:5001/api/v0/add', files=files)
+ p = response.json()
+ print(p)
+ hash = p['Hash']
+ print(hash)
  return {"query": f"https://aiverse-aigen.infura-ipfs.io/ipfs/{hash}"}
