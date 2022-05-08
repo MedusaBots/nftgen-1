@@ -15,7 +15,7 @@ headers["Content-Type"] = "image/*"
 header = CaseInsensitiveDict()
 header["accept"] = "application/json"
 header["Authorization"] = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweERDMjBCQmZmODI1YzgzMzY3ZjlBODc5MmU3NTA4ODE3OTE1NjQ5RjciLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTY1MjAzNzg2MzY5NiwibmFtZSI6ImFpdmVyc2UifQ.UAmNR8bj6RES1BqMW5v-W1u-rKLoZ6xWMsqzQ9yL3zo"
-header"Content-Type"] = "json/*"
+header["Content-Type"] = "json/*"
 
 app.add_middleware(
     CORSMiddleware,
