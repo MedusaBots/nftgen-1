@@ -435,7 +435,7 @@ async def read_item(query : str):
  print(a)
  itt= a["value"]["cid"]
  print(itt)
- dit=list{
+ dit={
     "name": f"{query} - A artpiece by aiverse",
     "description": "A piece of art made by an ai employed at aiverse. Aiverse is a deep-tech marketplace and no-code editors for making ai and metaverse",
     "image": f"https://{itt}.ipfs.nftstorage.link/",
