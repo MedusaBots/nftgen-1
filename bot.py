@@ -381,8 +381,7 @@ async def read_item(query : str):
     TF.to_pil_image(out[0].cpu()).save(f'{query}.png')
     display.display(display.Image(f'{query}.png'))
  i = 0
- def ascend_txt():
-    global i
+ def ascend_txt(i):
     im=str(i)
     out = synth(z)
     iii = perceptor.encode_image(normalize(make_cutouts(out))).float()
@@ -402,7 +401,7 @@ async def read_item(query : str):
 
  def train(i):
     opt.zero_grad()
-    lossAll = ascend_txt()
+    lossAll = ascend_txt(i)
     if i % args.display_freq == 0:
         checkin(i, lossAll)
        
