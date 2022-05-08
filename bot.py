@@ -373,14 +373,14 @@ async def read_item(query : str):
     else:
         z_q = vector_quantize(z.movedim(1, 3), model.quantize.embedding.weight).movedim(3, 1)
     return clamp_with_grad(model.decode(z_q).add(1).div(2), 0, 1)
+ @torch.no_grad()
  def checkin(i, losses):
     losses_str = ', '.join(f'{loss.item():g}' for loss in losses)
     tqdm.write(f'i: {i}, loss: {sum(losses).item():g}, losses: {losses_str}')
     out = synth(z)
     TF.to_pil_image(out[0].cpu()).save(f'{query}.png')
     display.display(display.Image(f'{query}.png'))
- checkin =torch.no_grad(checkin)
-
+ 
  def ascend_txt():
     global i
     out = synth(z)
