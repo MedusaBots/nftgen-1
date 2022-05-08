@@ -428,8 +428,9 @@ async def read_item(query : str):
  data=open(f"{query}.png", 'rb')
  resp = requests.post(url, headers=headers, data=data)
  a=resp.json()
- i= a["value"]["cid"]
- print(i)
+ print(a)
+ itt= a["value"]["cid"]
+ print(itt)
  dit=list({""})
  print(resp.status_code)
  with open('dit.json', 'w', encoding='utf-8') as f:
